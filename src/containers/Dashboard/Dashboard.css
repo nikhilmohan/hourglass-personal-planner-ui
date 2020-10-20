@@ -1,0 +1,7 @@
+.Dashboard{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+    background-color:rgba(223, 229, 240, 0.801);    
+}

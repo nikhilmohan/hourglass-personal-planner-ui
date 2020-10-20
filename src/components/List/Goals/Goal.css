@@ -1,0 +1,17 @@
+.Goal {
+  width: 75%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  background-color: white ;
+  margin: auto;
+  margin-bottom: 8px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 3px #ccc;
+  padding: 2px;
+
+  
+   
+}
+
+

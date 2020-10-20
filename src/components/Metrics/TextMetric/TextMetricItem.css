@@ -1,0 +1,27 @@
+.Content {
+    width: 45%;
+    padding: 2px;
+    text-align: center;
+    border: 1px solid rgb(5, 103, 110);
+    box-shadow: 0 2px 3px  rgb(5, 103, 110);
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color:rgb(5, 103, 110);   
+    margin: 4px;
+    
+}
+
+.Metric {
+    font-size: 24px;
+    font-weight: bold;
+    color: whitesmoke;
+    font-family: 'Noto Serif', serif;    
+}
+
+.Label {
+    margin-top: 0.5rem;
+    font-size: 12px;
+    color: whitesmoke; 
+    
+    
+}

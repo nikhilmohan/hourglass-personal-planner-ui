@@ -1,0 +1,41 @@
+.Content {
+    width: 280px;
+    height: 200px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: white;
+    
+}
+
+.Name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Description {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;   
+    color: rgba(128, 128, 128, 0.918); 
+    max-height: 100px;
+    min-height: 100px;
+    display: block;
+    overflow: unset;
+    
+}
+
+.Image {
+    width: 100%;
+    height: 40%;
+  }
+  
+.Image img {
+    width: 60%;
+    height: 90%;
+}

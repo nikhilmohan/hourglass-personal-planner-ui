@@ -1,0 +1,41 @@
+.GoalActions {
+  width: 15%;
+  display: flex;
+  flex-flow: column;
+  justify-content: right;  
+  float: right;
+  
+  text-align: right;
+ 
+}
+
+.Completion {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-align: left;   
+  color: green; 
+  display: block;
+  float: right;
+  min-height: 15px; 
+  margin-bottom: 0.5rem;
+
+}
+.Date {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-align: left;   
+  color: green; 
+  display: block;
+  float: right;
+  min-height: 15px; 
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.ActionIcons {
+ 
+  display: flex;
+  float: right;
+ 
+  
+}
+

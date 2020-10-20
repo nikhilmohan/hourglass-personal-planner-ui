@@ -1,0 +1,16 @@
+.Tasks {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+    background-color: whitesmoke;
+   
+}
+.YesNo {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+   
+   
+}

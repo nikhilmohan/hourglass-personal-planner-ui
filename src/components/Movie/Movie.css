@@ -1,0 +1,77 @@
+.Content {
+    width: 360px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: white;
+    
+}
+
+.Title {
+    font-size: 1.0rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Description {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;   
+    color: rgba(128, 128, 128, 0.918); 
+    max-height: 80px;
+    min-height: 80px;
+    display: block;
+    overflow: hidden;
+    
+}
+
+.Genre {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;   
+    color: rgba(29, 4, 4, 0.918); 
+}
+
+.RatingDetails {
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    color: rgba(34, 4, 4, 0.801);
+    
+}
+.RatingDetails div{
+    width: 25%;
+    height: 75%;
+}
+
+.Image {
+    width: 100%;
+    height: 60%;
+  }
+  
+.Image img {
+    width: 70%;
+    height: 90%;
+}
+.Favbtn {
+    background-color: transparent;
+    border: none;
+    color: salmon;
+    font-size: 16px;
+    cursor: pointer;
+  }
+.Favbtn:hover {
+    color: red;
+}
+.Favourite {
+ text-align: end;
+}

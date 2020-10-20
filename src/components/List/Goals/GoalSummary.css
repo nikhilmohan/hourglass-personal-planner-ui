@@ -1,0 +1,43 @@
+.Summary {
+  width: 45%;
+  font-size: 1.0rem;
+  
+  
+}
+.Name {
+  font-weight: bold;
+  text-align: left;
+}
+.Name.Completed{
+ color: green;
+}
+
+.Name.Deferred{
+  color: darkgrey;
+ }
+
+.Description {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-align: left;   
+  color: black; 
+  max-height: 30px;
+  min-height: 30px;
+  display: block;
+  overflow: hidden;
+  
+}
+
+.Date {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: left;   
+  color: cornflowerblue; 
+  max-height: 30px;
+  min-height: 30px;
+  display: block;
+  overflow: hidden;
+  
+}
+

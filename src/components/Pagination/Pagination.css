@@ -1,0 +1,23 @@
+.Pagination{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+    background-color: white;
+    margin: 1rem;
+}
+.Pagination button{
+    border-style: solid;
+    border-color: #1460a7;
+    border-width: 1px;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+}
+
+.Pagination button:hover,
+  .Pagination button:active,
+  .Pagination button.active {
+    background-color: #1460a7;
+    color: white;
+}

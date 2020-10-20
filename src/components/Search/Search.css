@@ -1,0 +1,26 @@
+.Search {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 40%;
+    margin: auto;
+    padding: 2rem;
+    background-color: whitesmoke;
+   
+}
+
+.InputElement {
+    outline: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    font: inherit;
+    padding: 6px 10px;
+    width: 80%;
+    box-sizing: border-box;
+    
+  }
+  .Button {
+    border: #357dc0;
+    border-style: solid;
+    background-color: #357dc0;
+}

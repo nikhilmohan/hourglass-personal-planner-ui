@@ -1,0 +1,50 @@
+.CompleteActionbtn {
+    font-size: 24px;
+    outline: none;
+    color:rgb(7, 53, 122);
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+  }
+.CompleteActionbtn:hover {
+    color: salmon
+}
+
+.DeferActionbtn {
+    font-size: 24px;
+    outline: none;
+    color:rgb(207, 48, 20);
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+  }
+.DeferActionbtn:hover {
+    color: rgb(201, 204, 26);
+}
+
+.ResumeActionbtn {
+    font-size: 24px;
+    outline: none;
+    color:rgb(24, 187, 97);
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+  }
+.ResumeActionbtn:hover {
+    color: rgb(103, 5, 122);
+}
+
+
+.Action {
+ float: right;
+}
+
+.notclicked {
+    color: lightgrey;   
+}
+.clicked {
+    color: red;
+    
+}
+
+

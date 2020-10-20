@@ -1,0 +1,48 @@
+.Task {
+    width: 30%;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: white;
+    
+}
+
+.Title {
+    font-size: 1.0rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Description {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;   
+    color: rgba(128, 128, 128, 0.918); 
+    max-height: 80px;
+    min-height: 80px;
+    display: block;
+    overflow: hidden;
+    
+}
+.Date {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: left;   
+    color: cornflowerblue; 
+    max-height: 30px;
+    min-height: 30px;
+    display: block;
+    overflow: hidden;
+    
+}
+
+ .ActionIcons {
+ 
+    display: flex;
+    float: right;
+}

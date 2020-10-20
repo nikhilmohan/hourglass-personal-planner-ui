@@ -1,0 +1,21 @@
+.Favbtn {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+  }
+.Favbtn:hover {
+    color: salmon;
+}
+.Favourite {
+ text-align: end;
+}
+
+.notclicked {
+    color: lightgrey;   
+}
+.clicked {
+    color: red;
+    
+}

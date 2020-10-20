@@ -1,0 +1,9 @@
+[1011/233528.164:ERROR:settings.cc(430)] Settings version is not 5
+[1011/234528.195:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1012/220345.102:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1013/232420.539:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1017/230927.011:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\nikmo\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\0ccb547c-5f48-4550-9b06-439b7a9ae9bb: The system cannot find the path specified. (0x3)
+[1017/230927.017:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\nikmo\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\ae7eba10-a3c2-490d-a0b9-4e6534dcb767: The system cannot find the path specified. (0x3)
+[1017/230927.017:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1018/170749.368:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1019/224725.227:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

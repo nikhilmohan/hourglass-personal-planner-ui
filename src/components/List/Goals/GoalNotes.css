@@ -1,0 +1,16 @@
+.Notes {
+  width: 40%;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  font-weight: bold;
+ 
+}
+.Note {
+  color: black;
+  font-weight: normal;
+  margin: 0px;
+}
+.List{
+  margin: 2px;
+  padding: 0px;
+}

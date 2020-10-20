@@ -1,0 +1,13 @@
+.Banner {
+    width: 100%;
+    height: 380px;
+    box-sizing: border-box;
+    margin: auto;
+    
+   
+        
+  }
+  .Banner img {
+        width: 100%;
+        height: 100%;
+   }

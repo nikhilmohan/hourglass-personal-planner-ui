@@ -1,0 +1,22 @@
+.Content    {
+    text-align: left;
+    color: rgba(2, 63, 63, 0.911);
+    font-weight: bold;
+    padding: 10px;
+    font-size: 26px;
+    text-indent: 3rem;
+    font-family: 'Noto Serif', serif;
+    background-color: whitesmoke;
+    
+    
+}
+
+.hr {
+   
+    border-top: 3px solid rgb(29, 8, 107);
+}
+
+.CustomBackground {
+    background-color: white;
+ 
+}

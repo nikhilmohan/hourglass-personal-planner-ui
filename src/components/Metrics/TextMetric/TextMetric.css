@@ -1,0 +1,27 @@
+.Container {
+    width: 18%;
+    background-color: rgba(223, 229, 240, 0.801);
+    border-style: none;
+    border-color: rgba(223, 229, 240, 0.801); 
+    margin: 1rem;  
+    height: 50%;    
+    margin-top: 5rem;
+
+}
+.Content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    
+   
+}
+.Heading{
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    color:rgb(5, 103, 110);
+    margin: 6px;
+    font-family: 'Noto Serif';
+}
+
+
