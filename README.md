@@ -1,3 +1,5 @@
+# Hourglass #
+
 Hourglass is a personal development planner application. This project represents the frontend application for the microservices based solution. ReactJS is used for developing this application.
 
 The Single Page Application supports following capabilities
