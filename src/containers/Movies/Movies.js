@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Movie from '../../components/Movie/Movie';
 import SectionHeader from '../../components/SectionHeader/SectionHeader';
+import { connect } from 'react-redux';
 import Axios from 'axios';
 import classes from './Movies.css';
 
@@ -14,31 +15,56 @@ class Movies extends Component    {
         movies: []
     };
 
-    addToFavouritesHandler = (title) =>  {
+    updateFavouritesHandler = (title) =>  {
         console.log("clicked! " + title);
         const selectedMovieIdx = this.state.movies.findIndex(movie => movie.title === title);
         let updatedMovies = [...this.state.movies];
         let selectedMovie = updatedMovies[selectedMovieIdx];
         selectedMovie.favourite = !selectedMovie.favourite;
+
         this.setState({ movies: updatedMovies});
         this.state.movies.forEach(movie => console.log(movie));
-        
+        const authHeader = {
+            headers: {
+                Authorization : 'Bearer ' + this.props.token
+            }
+        }
 
+        const favMovie = 
+        {
+            id: selectedMovie.id,
+            name: selectedMovie.title,
+            description: selectedMovie.plot,
+            poster: selectedMovie.poster
+        }
+        Axios.put("http://localhost:9900/favourites-service/favourites/user/" + this.props.id + "/movie",  favMovie, authHeader)
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(err => console.log(err));
+            
     }
 
     componentDidMount() {
-        console.log("Component did mount");
-        Axios.get('http://localhost:8095/movies')
+        console.log("Component did mount " + this.props.token);
+        const authHeader = (this.props.token !== null) ? {
+            headers:
+            {
+                Authorization: 'Bearer ' + this.props.token
+            }
+        } : null;
+        Axios.get('http://localhost:9900/movie-service/movies', authHeader)
             .then(response => {
                 console.log(response);
-                const movieList = response.data.map(movie => {return { ...movie, votes: this.numberWithCommas(movie.votes) }});
+                const movieList = response.data.movies.map(movie => {return { ...movie, votes: this.numberWithCommas(movie.imdbVotes) }});
                 this.setState({movies : movieList});
-            });
+            })
+            .catch(err => console.log(err));
     }
  
     render()    {
         const movies =  this.state.movies.map(movie => {
-                return <Movie item={movie} isAuth={this.props.isAuth} clicked={() => this.addToFavouritesHandler(movie.title)} key={movie.title}/>
+                return <Movie item={movie} isAuth={this.props.isAuth} clicked={() => this.updateFavouritesHandler(movie.title)} key={movie.title}/>
                 });
             
            
@@ -52,4 +78,12 @@ class Movies extends Component    {
     }
 
 }
-export default Movies;
+const mapStateToProps = state => {
+    return {
+      id: state.auth.id,
+      token: state.auth.token
+     
+    };
+  };
+
+  export default connect(mapStateToProps, null)(Movies);

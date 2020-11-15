@@ -6,6 +6,10 @@ import classes from './Auth.css';
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/Auxilliary';
 import * as actions from '../../store/actions/index';
+import Axios from 'axios';
+import { authStart } from '../../store/actions/auth';
+import { Redirect } from 'react-router-dom';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 
 class Auth extends Component {
@@ -78,7 +82,8 @@ class Auth extends Component {
                 },
                 validation: {
                   required : true,
-                  minlength: 6
+                  minlength: 6,
+                  match: true
                 },
                 isValid : false,
                 touched : false,
@@ -89,6 +94,7 @@ class Auth extends Component {
         processing: true,
         showLogin: true,
         signupComplete: false
+        
       };
 
     checkValidity(value, rules) {
@@ -104,6 +110,9 @@ class Auth extends Component {
             }
             if (rules.maxlength) {
             isValid = value.length <= rules.minlength && isValid;
+            }
+            if (rules.match)  {
+              isValid = value === this.state.signupForm['password'].value;
             }
         }
         return isValid;
@@ -125,8 +134,10 @@ class Auth extends Component {
         // server call
         this.props.onAuth(auth.email, auth.password, false)
        
-        this.setState({user: 'Nikhil', token: 'abc', loggedIn: true});     
-        this.props.history.replace('/');         
+        this.setState({ loggedIn: true});    
+        console.log("error " + this.props.error); 
+        console.log("redirecting");
+        return <Redirect to="/" />;       
         
     }
 
@@ -167,8 +178,8 @@ class Auth extends Component {
 
     cancelLoginHandler = () => {
         this.setState({processing : false});
-        this.props.history.replace('/');
-        //redict to /
+        console.log("modal closed");
+       return this.props.history.push("/");
     }
 
     showSignupHandler = () => {
@@ -189,12 +200,13 @@ class Auth extends Component {
         auth.password = signupData['password'].value;
         auth.confirmPassword = signupData['confirmPassword'].value;
 
-       
         // server call
 
-       
-        this.setState({user: 'Nikhil', token: 'abc', loggedIn: true, signupComplete: true}); 
-        this.props.history.replace('/');
+       this.props.onAuth(auth.email, auth.password, true)
+
+       return <Redirect to="/" />;  
+      
+        
 
         
     }
@@ -217,7 +229,13 @@ class Auth extends Component {
     }
 
     render()    {
-        console.log("in render " + this.state.processing);
+        console.log("in render " + this.state.processing +  " " + this.props.error);
+
+        let showError = null;
+        
+        if (this.props.error) {
+          showError = 'Invalid credentials!';
+        }
 
         let formView = null;
         let inputElements = [];
@@ -226,8 +244,11 @@ class Auth extends Component {
             inputElements = this.getInputElements(this.state.loginForm, this.loginInputChangedHandler);
         
             formView = (<Aux>
+
                             <div className={classes.Form}>
+                               
                                 <form onSubmit={this.loginHandler}>
+                                    <p style={{textAlign: 'center', fontSize: '14px', color: 'salmon'}}> {showError}</p>
                                     {inputElements}
                                     <Button btnType = "Info" disabled = {!this.state.formValidity}>Login</Button>
                                     
@@ -238,7 +259,7 @@ class Auth extends Component {
                                 onSubmit={this.showSignupHandler}> 
                                 <p>Do you want to register?</p>
                                 <Button btnType = "Outline" disabled={false}>Sign Up</Button> 
-                            </form> 
+                            </form>                            
                         </Aux>);
         } else {
             if (!this.state.signupComplete) {
@@ -277,7 +298,8 @@ class Auth extends Component {
         
 
         return (
-                <Modal show = {this.state.processing} modalClosed = {this.cancelLoginHandler}>               
+                <Modal show = {this.state.processing} modalClosed = {this.cancelLoginHandler}>    
+                           
                     {formView}         
                 </Modal>
         );

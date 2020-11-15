@@ -10,13 +10,15 @@ const goalActions = (props) => {
 
   const voteIconStyle = {fontSize: '18px', color: 'gold'};
 
-  const voteIcon = Array.from(Array(props.votes)).map(key => {
+  let i = 0;
 
-             return <i key={key} className='fas fa-award' style={voteIconStyle}>&nbsp;</i>                    
-           });
+  const voteIcon = Array.from(Array(props.votes)).map(key => {
+          i = i + 1;
+          return <i key={i} className='fas fa-award' style={voteIconStyle}>&nbsp;</i>                    
+        });
 
   switch (props.status) {
-    case 'Completed':
+    case 'C':
       controlOutput =   <div className={classes.Date}>
                           <span style={{fontWeight: 'normal'}}>Completed On: </span>{props.completedOn}  
                         </div>;
@@ -24,7 +26,7 @@ const goalActions = (props) => {
                 Votes: {voteIcon}
               </div>      
       break;
-    case 'Active': 
+    case 'A': 
       controlOutput =<div className={classes.ActionIcons}>
                           <ActionControl name={props.name}
                                          action='Completed'
@@ -36,7 +38,7 @@ const goalActions = (props) => {
                                          clicked={props.clicked}/> 
                       </div>;
       break;
-    case 'Deferred':
+    case 'D':
       controlOutput = <div className={classes.ActionIcons}>
                             <ActionControl name={props.name}
                                            action='Resumed'

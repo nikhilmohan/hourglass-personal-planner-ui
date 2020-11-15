@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import Axios from 'axios';
 
 export const authStart = () => {
   return {
@@ -7,19 +8,40 @@ export const authStart = () => {
   };
 }
 
-export const authSuccess = (token, email) => {
+export const authSuccess = (data) => {
   return {
     type : actionTypes.AUTH_SUCCESS,
-    token : token,
-    email : email
+    token : data.idToken,
+    id : data.localId
   };
 }
-export const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('email');
-  console.log("Removed token and email!");
+export const logout = (userId, token) => {
+  console.log("userId " + userId);
+  return dispatch => {
+    const data = {
+      localId: userId
+    };
+    const authHeader = {
+      headers: {
+        Authorization : 'Bearer ' + token
+      }
+    }
+    Axios.post('http://localhost:9900/user-service/logout', data, authHeader)
+    .then(response => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('id');
+      console.log("Removed token and id!");
+      dispatch(authLogout())
+      
+    })
+    .catch(err => console.log(err));
+  };
+}
+
+export const authLogout = () => {
   return {
     type : actionTypes.AUTH_LOGOUT
+    
   };
 }
 
@@ -35,11 +57,20 @@ export const checkAuthStatus = () => {
     if (!token) {
       dispatch(logout());
     } else {     
-        const email = localStorage.getItem('email');
-        dispatch(authSuccess(token, email));                    
+        const id = localStorage.getItem('id');
+        dispatch(authSuccess(token, id));                    
     }
   }
 }
+export const checkAuthTimeout = (expiresIn, id) => {
+  return dispatch => {
+    setTimeout( (expiresIn) => {
+      dispatch(logout(id));
+
+    }, expiresIn * 1000);
+  };
+}
+
 export const auth = (email, password, signUp) => {
   return dispatch => {
     console.log("in action auth");
@@ -49,16 +80,20 @@ export const auth = (email, password, signUp) => {
       password : password
     };
 
-    //server call
-
-    let response = { data : {
-      idToken : 'abc',
-      localId: 'test@mail.com'
-    }};
+    const path = ( signUp === true ) ? "signup" : "login";
+    Axios.post('http://localhost:9900/user-service/' + path, authData)
+    .then(response => {
+      localStorage.setItem('token', response.data.idToken);
+      localStorage.setItem('id', response.data.localId);
+      dispatch(authSuccess(response.data));
+      dispatch(checkAuthTimeout(response.data.expiresIn, response.data.localId))
+    })
+    .catch(err => {
+      console.log("login error : " + err);
+      dispatch(authFail(err))
+    });
 
     
-    localStorage.setItem('token', response.data.idToken);
-    localStorage.setItem('email', response.data.localId);
-    dispatch(authSuccess(response.data.idToken, response.data.localId));
+    
   };
 }

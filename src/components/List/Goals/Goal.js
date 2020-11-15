@@ -10,7 +10,7 @@ const goal = (props) => {
 
   let completionOutput = null;
   
-  if (props.status === 'Completed')  {
+  if (props.status === 'C')  {
     const completionDetails = 'Completed on: ' + props.completedOn;
     const votes = ' votes: ' + props.votes;
 

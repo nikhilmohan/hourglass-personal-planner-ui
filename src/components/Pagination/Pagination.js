@@ -3,7 +3,7 @@ import classes from './Pagination.css';
 
 const pagination = (props) => {
 
-    const PAGE_SIZE = 1;
+    const PAGE_SIZE = 5;
 
     const totalPages = Math.ceil(props.goalCount / PAGE_SIZE);
 

@@ -5,6 +5,15 @@ import classes from './GoalNotesForm.css';
 
 const goalNotesForm = (props) => {
 
+    let showError = null;
+
+    if (props.error) {
+        
+        showError =  <p style={{textAlign: 'center', fontSize: '14px', color: 'salmon'}}>{props.error}</p>;
+        console.log(props.error);
+      }
+
+
     let inputArray = [];
     console.log("GoalNotesForm " + props.clicked);
 
@@ -24,6 +33,7 @@ const goalNotesForm = (props) => {
         <div>
             
             <form  onSubmit={props.clicked} className={classes.Form}>
+                {showError}
                 {inputElements}
                 <Button btnType = "Info" 
                         disabled = {!props.formValidity}

@@ -8,6 +8,11 @@ import Button from '../../UI/Button/Button';
 
 const taskList = (props) => {
 
+    let showError = null;
+
+    if (props.error) {          
+        showError = <p style={{textAlign: 'center', fontSize: '14px', color: 'salmon'}} >{props.error}</p>;
+    }
     const tasks = props.tasks.map(task => {
             return <Task key={task.name} {...task} clicked={props.clicked}/>;
            });
@@ -15,6 +20,7 @@ const taskList = (props) => {
         <Aux>
             <Modal show = {props.completing} modalClosed = {props.cancelClicked}>
                 <div>
+                    {showError}
                     <h3>Are you sure you want to complete this task?</h3>
                     <div className={classes.YesNo}>
                         <Button btnType = "Info" clicked={props.completeClicked}>Yes</Button>

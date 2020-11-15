@@ -38,8 +38,8 @@ const input = (props) => {
       inputElement =    <DatePicker className={attachedClasses.join(' ')} selected={ props.value } 
                                     onChange={props.changed}
                                     name="startDate"
-                                    minDate={new Date()}
-                                    dateFormat="MM/dd/yyyy"
+                                    //minDate={new Date()}
+                                    dateFormat="yyyy-MM-dd"
                                     placeholderText={props.config.placeholder}
                         />
       break;

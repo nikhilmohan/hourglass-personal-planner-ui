@@ -8,6 +8,9 @@ import GoalNotesForm from './GoalNotesForm';
 import classes from './GoalList.css';
 import Search from '../../Search/Search';
 import Pagination from '../../Pagination/Pagination';
+import Axios from 'axios';
+import { connect } from 'react-redux';
+import { auth } from '../../../store/actions';
 
 
 class GoalList extends Component {
@@ -37,7 +40,8 @@ class GoalList extends Component {
         },
         searchTerm: '',
         searchDisabled: true,
-        currentPage: 1
+        currentPage: 1,
+        error: null
      }
 
      checkValidity(value, rules) {
@@ -74,7 +78,7 @@ class GoalList extends Component {
             formValidity = formValidity && updatedForm[elem].isValid;
         }
         console.log("formvalidity " + formValidity);
-        this.setState({addGoalNotesForm : updatedForm, formValidity : formValidity}); 
+        this.setState({addGoalNotesForm : updatedForm, formValidity : formValidity, error: null}); 
      }
      startCompleteGoalHandler = (name, action) => {
         this.setState({completing: true});
@@ -93,26 +97,45 @@ class GoalList extends Component {
         let updatedGoals = [...goals];
         const updatedGoalIdx = updatedGoals.findIndex(goal => goal.name === currentGoal); 
         console.log(currentGoal + "-" + updatedGoalIdx);       
-        let updatedGoal = updatedGoals[updatedGoalIdx];
+        let updatedGoal = {...updatedGoals[updatedGoalIdx]};
         if (addGoalNotesForm['note'].noteType === 'Completed') {
-            updatedGoal.status = 'Completed';
-            updatedGoal.completedOn = moment(new Date()).format("DD/MM/YYYY");
+            updatedGoal.status = 'C';
+            updatedGoal.completedOn = moment(new Date()).format("YYYY-MM-DD");
             updatedGoal.votes = 3;
         }
         if (addGoalNotesForm['note'].noteType === 'Deferred') {
-            updatedGoal.status = 'Deferred';
+            updatedGoal.status = 'D';
         }
         if (addGoalNotesForm['note'].noteType === 'Resumed') {
-            updatedGoal.status = 'Active';
+            updatedGoal.status = 'A';
         }
        
         const note = addGoalNotesForm['note'].noteType + ': ' + addGoalNotesForm['note'].value;
+
+        updatedGoal.notes = [...updatedGoals[updatedGoalIdx].notes];
         updatedGoal.notes.push(note);
-        updatedGoals[updatedGoalIdx] = updatedGoal;
         addGoalNotesForm['note'].value = '';
 
-        this.setState({addGoalNotesForm: addGoalNotesForm, completing: false});
-        clicked(goals);
+        const authHeader =  {
+            headers:
+            {
+                Authorization: 'Bearer ' + this.props.token
+            }
+        } ;
+        console.log(updatedGoal);
+        Axios.put("http://localhost:9900/goal-service/goal", updatedGoal, authHeader)
+            .then(response => {
+                console.log(response);
+                this.setState({addGoalNotesForm: addGoalNotesForm, completing: false});
+                updatedGoals[updatedGoalIdx] = updatedGoal;
+                clicked(updatedGoals);
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({error: 'error'});
+
+            });
+        
      }
     
 
@@ -126,17 +149,32 @@ class GoalList extends Component {
         this.setState({searchTerm: searchTerm, searchDisabled: disabled});
     }
 
-    pageClickHandler = (clickedPage) => {
-        console.log("clicked page " + clickedPage);
-        this.setState({currentPage: clickedPage});
+    pageClickHandler = (page) => {
+        console.log("clicked page " + page);
+        this.setState({currentPage: page});
+        this.props.pageClicked(page);
+    }
+
+    cancelCompleteGoalHandler = () => {
+        this.setState({completing : false, error: null});
     }
     
     render() {
 
+        let errorText = null;
+        let showError = null;
+        
+
+        if (this.state.error) {
+            errorText = "Goal could not be updated!";
+           
+            console.log(errorText);
+          }
+
         const noteView = <GoalNotesForm changed={this.noteChangedHandler} 
                                         addGoalNotesForm={this.state.addGoalNotesForm} 
                                         clicked={(event)=>this.completeGoalHandler(event, this.props.goals, this.props.clicked)}
-                                        formValidity={this.state.formValidity}/>
+                                        formValidity={this.state.formValidity} error={errorText}/>
      
 
         const goals = this.props.goals.map(goal => {
@@ -151,17 +189,27 @@ class GoalList extends Component {
                     <SectionHeader heading="My Goals"  />
                     <Search changed={(event)=>this.searchChangeHandler(event)} 
                             clicked={(event)=>this.props.searched(event, this.state.searchTerm)}
-                            disabled={this.state.searchDisabled}/>
+                            disabled={false}/>
                     
                         {goals}
                     
                 </div>
-                <Pagination goalCount = {this.props.goals.length} 
+                <Pagination goalCount = {this.props.totalGoals} 
                             clicked={this.pageClickHandler}
-                            currentPage = {this.state.currentPage}
+                            currentPage = {this.state.currentPage}                        
                 />
             </Aux>
         );
     }
+    componentDidMount() {
+        console.log("Component did mount called!");
+    }
 }
-export default GoalList;
+const mapStateToProps = state => {
+    return {
+      id: state.auth.id,
+      token: state.auth.token
+     
+    };
+  };
+export default connect(mapStateToProps)(GoalList);

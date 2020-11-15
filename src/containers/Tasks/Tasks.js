@@ -5,6 +5,8 @@ import Input from '../../components/UI/Input/Input';
 import classes from './Tasks.css';
 import TaskList from '../../components/List/Tasks/TaskList';
 import Aux from '../../hoc/Auxilliary';
+import Axios from 'axios';
+import { connect } from 'react-redux';
 
 class Tasks extends Component {
     state = {
@@ -57,7 +59,9 @@ class Tasks extends Component {
         formValidity : false,
         freeze: false,
         completing: false,
-        taskToDelete: ''
+        taskToDelete: '',
+        addError: null,
+        completeError: null
       };
 
     checkValidity(value, rules) {
@@ -90,7 +94,7 @@ class Tasks extends Component {
         
         task.name = formData['name'].value;
         task.description = formData['description'].value;
-        let date = moment(formData['dueDate'].value).format("DD/MM/YYYY")
+        let date = moment(formData['dueDate'].value).format("YYYY-MM-DD")
         console.log("due date " + date );
         task.dueDate = date;
         let tasks = [...this.state.tasks];
@@ -99,9 +103,31 @@ class Tasks extends Component {
         formData['description'].value = '';
         formData['dueDate'].value = '';
         
-        tasks.push(task);
-        const freeze = (tasks.length) === 12 ? true : false;
-        this.setState({tasks: tasks, addTaskForm: formData, formValidity: false, freeze : freeze});              
+        task.userId = this.props.id;
+
+        const authHeader = {
+          headers:
+            {
+                Authorization: 'Bearer ' + this.props.token
+            }
+         } ;
+
+        Axios.post("http://localhost:9900/task-service/task/add", task, authHeader)
+        .then(response => {
+          console.log(response);
+          tasks.push(response.data);
+          console.log("Task pushed " + response.data.name);
+          tasks.forEach(task => console.log(task.name));
+          const freeze = (tasks.length) === 12 ? true : false;
+          this.setState({tasks: tasks, addTaskForm: formData, formValidity: false, freeze : freeze});  
+
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({addError: 'Task cannot be added!'});
+        });
+        
+                   
         
     }
 
@@ -125,49 +151,60 @@ class Tasks extends Component {
         for (let elem in updatedForm) {
             formValidity = formValidity && updatedForm[elem].isValid;
         }
-        this.setState({addTaskForm : updatedForm, formValidity : formValidity});        
+        this.setState({addTaskForm : updatedForm, formValidity : formValidity, addError: null});        
         
     }
     componentDidMount () {
-         //server call to fetch goals
-        const task1 = {
-            name: 'File return',
-            description: 'File this years IT return',
-            dueDate: '15/11/2020'            
-        };
-        const task2 = {
-          name: 'Call tenant',
-          description: 'call tenant to sort out final payment',
-          dueDate: '20/10/2020'            
-        };
-        const task3 = {
-          name: 'Pay insurance premium',
-          description: 'Pay yearly premium',
-          dueDate: '22/10/2020'            
-        };
-      const task4 = {
-          name: 'File return1',
-          description: 'File this years IT return',
-          dueDate: '25/11/2020'            
-      };
-      const task5 = {
-        name: 'Call tenant1',
-        description: 'call tenant to sort out final payment',
-        dueDate: '26/10/2020'            
-      };
-      const task6 = {
-        name: 'Pay insurance premium1',
-        description: 'Pay yearly premium',
-        dueDate: '27/10/2020'            
-      };
+
+      
+         //server call to fetch tasks
+
+         const authHeader = {
+          headers:
+            {
+                Authorization: 'Bearer ' + this.props.token
+            }
+         } ;
+
+         Axios.get('http://localhost:9900/task-service/tasks', authHeader)
+            .then(response => {
+                console.log(response);
+                this.setState({tasks : response.data.tasks});
+            })
+            .catch(err => console.log(err));
+
+      //   const task1 = {
+      //       name: 'File return',
+      //       description: 'File this years IT return',
+      //       dueDate: '15/11/2020'            
+      //   };
+      //   const task2 = {
+      //     name: 'Call tenant',
+      //     description: 'call tenant to sort out final payment',
+      //     dueDate: '20/10/2020'            
+      //   };
+      //   const task3 = {
+      //     name: 'Pay insurance premium',
+      //     description: 'Pay yearly premium',
+      //     dueDate: '22/10/2020'            
+      //   };
+      // const task4 = {
+      //     name: 'File return1',
+      //     description: 'File this years IT return',
+      //     dueDate: '25/11/2020'            
+      // };
+      // const task5 = {
+      //   name: 'Call tenant1',
+      //   description: 'call tenant to sort out final payment',
+      //   dueDate: '26/10/2020'            
+      // };
+      // const task6 = {
+      //   name: 'Pay insurance premium1',
+      //   description: 'Pay yearly premium',
+      //   dueDate: '27/10/2020'            
+      // };
         
-        const fetchedTasks = [...this.state.tasks];
-        fetchedTasks.push(task1);
-        fetchedTasks.push(task2);
-        fetchedTasks.push(task3);
-        fetchedTasks.push(task4);
-        fetchedTasks.push(task5);
-        fetchedTasks.push(task6);
+        
         
         let freeze = false;
         let showTaskFreeze = null;
@@ -176,11 +213,14 @@ class Tasks extends Component {
           freeze = true;
                
         }
-        this.setState({tasks: fetchedTasks, freeze: freeze});
+        this.setState({freeze: freeze});
     }
 
     startCompleteTaskHandler = (taskName) => {
-      this.setState({"taskToDelete": taskName, completing: true});
+      const taskToDelete = {
+        name: taskName
+      };
+      this.setState({"taskToDelete": taskToDelete, completing: true, completeError: null});
       
     }
 
@@ -190,13 +230,30 @@ class Tasks extends Component {
 
       console.log("TASKS " + tasks.length + " " + this.state.taskToDelete);
 
-      tasks = tasks.filter(task => task.name !== this.state.taskToDelete);
-      console.log("TASKS " + tasks.length);
-      this.setState({tasks: tasks, completing: false, taskToDelete: ''})
+      const authHeader = {
+        headers:
+          {
+              Authorization: 'Bearer ' + this.props.token
+          }
+       } ;
+
+      Axios.post("http://localhost:9900/task-service/task/complete", this.state.taskToDelete, authHeader)
+      .then(response => {
+        console.log(response);
+        tasks = tasks.filter(task => task.name !== this.state.taskToDelete.name);
+        console.log("TASKS " + tasks.length);
+        this.setState({tasks: tasks, completing: false, taskToDelete: '', completeError: null})
+
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({completeError: 'Task cannot be completed!'});
+      });      
+     
     }
 
     cancelTaskHandler = () => {
-      this.setState({completing: false})
+      this.setState({completing: false, completeError: null})
     }
 
     render()    {
@@ -228,13 +285,19 @@ class Tasks extends Component {
           );   
         }      
    
-
+        
+        let showError = null;
+        if (this.state.addError) {
+          
+          showError = <p style={{textAlign: 'center', fontSize: '14px', color: 'salmon'}} >{this.state.addError}</p>;
+        }
      
  
        return (
            <Aux>
                 {showTaskFreeze}
                 <div className={classes.Form}>
+                    {showError}
                     <form onSubmit={this.addTaskHandler}>
                         {inputElements}
                         <Button btnType = "Info" disabled = {!this.state.formValidity}>Add Task</Button>
@@ -243,9 +306,18 @@ class Tasks extends Component {
                 <TaskList tasks={this.state.tasks} clicked={this.startCompleteTaskHandler}
                           completeClicked={this.completeTaskHandler}
                           cancelClicked={this.cancelTaskHandler}
-                          completing={this.state.completing}/>
+                          completing={this.state.completing}
+                          error={this.state.completeError}/>
               </Aux>
         );
    }
 }
-export default Tasks;
+const mapStateToProps = state => {
+  return {
+    id: state.auth.id,
+    token: state.auth.token
+   
+  };
+};
+
+export default connect(mapStateToProps)(Tasks);

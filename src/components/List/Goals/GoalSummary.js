@@ -4,28 +4,28 @@ import classes from './GoalSummary.css';
 
 const goalSummary = (props) => {
 
-  console.log("Goal level " + props.level);
+  console.log("Goal level " + props.level + " status " + props.status);
 
   let levelIconStyle = '';
 
-  if (props.level === 'extreme') {
+  if (props.level === 'Extreme') {
     levelIconStyle = {fontSize:'32px',color: 'darksalmon'}; 
   }
-  if (props.level === 'moderate') {
+  if (props.level === 'Moderate') {
     levelIconStyle = {fontSize:'24px',color:'orange'}; 
   }
-  if (props.level === 'easy') {
+  if (props.level === 'Easy') {
     levelIconStyle = {fontSize:'16px',color:'rgb(236, 222, 22)'}; 
   }
 
   let attachedClasses = [classes.Name];
 
-  if (props.status === 'Completed') {
+  if (props.status === 'C') {
     attachedClasses.push(classes.Completed);
   }
 
   
-  if (props.status === 'Deferred') {
+  if (props.status === 'D') {
     attachedClasses.push(classes.Deferred);
   }
 

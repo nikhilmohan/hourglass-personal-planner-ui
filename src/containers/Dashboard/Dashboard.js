@@ -5,6 +5,8 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader';
 import DoughnutMetric from '../../components/Metrics/DoughnutMetric/DoughnutMetric';
 import BarMetric from '../../components/Metrics/BarMetric/BarMetric';
 import LineMetric from '../../components/Metrics/LineMetric/LineMetric';
+import Axios from 'axios';
+import { connect } from 'react-redux';
 
 
 class Dashboard extends Component{
@@ -37,16 +39,16 @@ class Dashboard extends Component{
                 case 'averageScore': 
                     goalSummaryMetric.push({label: "Average score", value: data[key]});
                     break; 
-                case 'goalTarget' :
+                case 'goalsPlanned' :
                     goalMonthlyMetric.push({label: "Goals planned", value: data[key]});
                     break;                
-                case 'goalAccomplished': 
+                case 'goalsAccomplished': 
                     goalMonthlyMetric.push({label: "Goals accomplished", value: data[key]});
                     break;  
-                case 'taskTarget' :
+                case 'tasksPlanned' :
                     taskMonthlyMetric.push({label: "Tasks planned", value: data[key]});
                     break;                
-                case 'taskCompleted': 
+                case 'tasksCompleted': 
                     taskMonthlyMetric.push({label: "Tasks completed", value: data[key]});
                     break; 
                 case 'totalGoalsCompleted': 
@@ -73,13 +75,15 @@ class Dashboard extends Component{
                 case 'extremeGoalsCompleted': 
                     goalLevelMetric.push(data[key]);
                     break; 
-                default:
-                    if (key.startsWith("GoalTrend")) {
-                        const label = key.replace("GoalTrend", "");
-                        console.log("LabEL " + label);
-                        goalTrendMetric.push({label: label, value: data[key]});
-                    }
+                case 'trends':
+                    data[key].forEach(obj => {
+                        console.log("key " + obj.key + " value " + obj.value);
+                        goalTrendMetric.push({label: obj.key, value: obj.value});
+                    });
                     break;
+
+                    
+                    
             }
         });
         currentState.goalSummaryMetric = goalSummaryMetric;
@@ -89,6 +93,7 @@ class Dashboard extends Component{
         currentState.goalCompletionMetric = goalCompletionMetric;
         currentState.goalLevelMetric = goalLevelMetric;
         currentState.goalTrendMetric = goalTrendMetric;
+        currentState.goalDistributionMetric.forEach(value => console.log("Metric val " + value));
         this.setState(currentState);
     }
 
@@ -112,7 +117,18 @@ class Dashboard extends Component{
             GoalTrendFeb: 24,
             GoalTrendMarch: 33
         }
-        this.createMetricViewData(responseData)
+        const authHeader = {
+            headers: {
+                Authorization : 'Bearer ' + this.props.token
+            }
+        };
+        Axios.get('http://localhost:9900/dashboard-service/metrics', authHeader)
+            .then(response => {
+                console.log(response.data);
+                this.createMetricViewData(response.data);
+            })
+            .catch(err => console.log(err));
+       
     }
 
     render()    {
@@ -154,4 +170,11 @@ class Dashboard extends Component{
 
     }
 }
-export default Dashboard;
+const mapStateToProps = state => {
+    return {
+      id: state.auth.id,
+      token: state.auth.token
+     
+    };
+  };
+export default connect(mapStateToProps)(Dashboard);

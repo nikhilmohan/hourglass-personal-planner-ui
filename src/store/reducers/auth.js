@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   token : null,
-  email : null,
+  id : null,
   error: null
 }
 
@@ -18,7 +18,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         token : action.token,
-        email : action.email,
+        id : action.id,
         error: null
 
       };
@@ -32,7 +32,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         token: null,
-        email: null
+        id: null
 
       };
     }

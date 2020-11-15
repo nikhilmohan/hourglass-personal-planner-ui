@@ -10,7 +10,7 @@ const goalNotes = (props) => {
   const showNotes = (props.notes.length) ? 'Notes' : '';
 
   const notes = props.notes.map(note => {
-    return <li>{note}</li>;
+    return <li key={note}>{note}</li>;
   });
 
   return (<div className={classes.Notes}>
