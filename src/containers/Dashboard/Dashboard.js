@@ -17,7 +17,8 @@ class Dashboard extends Component{
         goalDistributionMetric: [],
         goalCompletionMetric: [],
         goalLevelMetric: [],
-        goalTrendMetric: []
+        goalTrendMetric: [],
+        fallback: null
            
     };
       
@@ -125,6 +126,10 @@ class Dashboard extends Component{
         Axios.get('http://localhost:9900/dashboard-service/metrics', authHeader)
             .then(response => {
                 console.log(response.data);
+                console.log("FALLBACK " + response.data.fallback);
+                if (response.data.fallback != '')   {
+                    this.setState({fallback: response.data.fallback});
+                }
                 this.createMetricViewData(response.data);
             })
             .catch(err => console.log(err));
@@ -136,35 +141,38 @@ class Dashboard extends Component{
         const goalCompletionLabels = ['On time', 'After time'];
         const goalLevelLabels = ['Easy', 'Moderate', 'Extreme'];
 
+        const dashboardView = this.state.fallback ? (<div className={classes.Dashboard}><p>{this.state.fallback}</p> </div>): 
+                                    <div className={classes.Dashboard}>
+                                        <TextMetric title='Goal Summary' metric={this.state.goalSummaryMetric}/> 
+                                        <DoughnutMetric 
+                                            title='Goal distribution'
+                                            labels={goalDistributionLabels}
+                                            data={this.state.goalDistributionMetric}
+                                        />  
+                                        <LineMetric
+                                            title='Goal Trend'
+                                            data={this.state.goalTrendMetric}
+                                        />    
+                                        <TextMetric title='Goal this month' metric={this.state.goalMonthlyMetric}/>
+                                        <TextMetric title='Tasks this month' metric={this.state.taskMonthlyMetric}/>
+                                        <DoughnutMetric 
+                                            title='Completed Goals - Schedule'
+                                            labels={goalCompletionLabels}
+                                            data={this.state.goalCompletionMetric}
+                                        />
+                                        <BarMetric 
+                                            title='Completed Goals - Level'
+                                            labels={goalLevelLabels}
+                                            data={this.state.goalLevelMetric}
+                                        />
+                                    </div>                                
+
+
         return (
             <div>
                 <SectionHeader heading="My activities" />
-                <div className={classes.Dashboard}>
-                    <TextMetric title='Goal Summary' metric={this.state.goalSummaryMetric}/> 
-                    <DoughnutMetric 
-                        title='Goal distribution'
-                        labels={goalDistributionLabels}
-                        data={this.state.goalDistributionMetric}
-                    />  
-                    <LineMetric
-                        title='Goal Trend'
-                        data={this.state.goalTrendMetric}
-                    />                                    
-                </div>
-                <div className={classes.Dashboard}>
-                    <TextMetric title='Goal this month' metric={this.state.goalMonthlyMetric}/>
-                    <TextMetric title='Tasks this month' metric={this.state.taskMonthlyMetric}/>
-                    <DoughnutMetric 
-                        title='Completed Goals - Schedule'
-                        labels={goalCompletionLabels}
-                        data={this.state.goalCompletionMetric}
-                    />
-                    <BarMetric 
-                        title='Completed Goals - Level'
-                        labels={goalLevelLabels}
-                        data={this.state.goalLevelMetric}
-                    />
-                </div>
+                {dashboardView}
+               
             </div>
         );        
 
