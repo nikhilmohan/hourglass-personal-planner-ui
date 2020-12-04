@@ -32,7 +32,7 @@ class Tidbits extends Component    {
                 Authorization : 'Bearer ' + this.props.token
             }
         };
-        Axios.put("http://localhost:9900/favourites-service/favourites/user/" + this.props.id + "/trivia", triviaData, authHeader)
+        Axios.put("http://gateway-service:9900/favourites-service/favourites/user/" + this.props.id + "/trivia", triviaData, authHeader)
             .then(response => {
                 console.log(response.data);
             })
@@ -48,7 +48,7 @@ class Tidbits extends Component    {
                 Authorization: 'Bearer ' + this.props.token
             }
         } : null;
-        Axios.get('http://localhost:9900/tidbits-service/tidbits', authHeader)
+        Axios.get('http://gateway-service:9900/tidbits-service/tidbits', authHeader)
             .then(response => {
                 console.log(response);  
                         

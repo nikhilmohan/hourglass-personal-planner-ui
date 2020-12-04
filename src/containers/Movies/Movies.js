@@ -37,7 +37,7 @@ class Movies extends Component    {
             description: selectedMovie.plot,
             poster: selectedMovie.poster
         }
-        Axios.put("http://localhost:9900/favourites-service/favourites/user/" + this.props.id + "/movie",  favMovie, authHeader)
+        Axios.put("http://gateway-service:9900/favourites-service/favourites/user/" + this.props.id + "/movie",  favMovie, authHeader)
                 .then(response => {
                     console.log(response.data);
                 })
@@ -53,7 +53,7 @@ class Movies extends Component    {
                 Authorization: 'Bearer ' + this.props.token
             }
         } : null;
-        Axios.get('http://localhost:9900/movie-service/movies', authHeader)
+        Axios.get('http://gateway-service:9900/movie-service/movies', authHeader)
             .then(response => {
                 console.log(response);
                 const movieList = response.data.movies.map(movie => {return { ...movie, votes: this.numberWithCommas(movie.imdbVotes) }});

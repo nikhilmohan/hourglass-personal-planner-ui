@@ -26,7 +26,7 @@ export const logout = (userId, token) => {
         Authorization : 'Bearer ' + token
       }
     }
-    Axios.post('http://localhost:9900/user-service/logout', data, authHeader)
+    Axios.post('http://gateway-service:9900/user-service/logout', data, authHeader)
     .then(response => {
       localStorage.removeItem('token');
       localStorage.removeItem('id');
@@ -81,7 +81,7 @@ export const auth = (email, password, signUp) => {
     };
 
     const path = ( signUp === true ) ? "signup" : "login";
-    Axios.post('http://localhost:9900/user-service/' + path, authData)
+    Axios.post('http://gateway-service:9900/user-service/' + path, authData)
     .then(response => {
       localStorage.setItem('token', response.data.idToken);
       localStorage.setItem('id', response.data.localId);

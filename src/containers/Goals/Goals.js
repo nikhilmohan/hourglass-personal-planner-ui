@@ -123,7 +123,7 @@ class Goals extends Component {
             }
          } ;
 
-        Axios.post("http://localhost:9900/goal-service/goal", goal, authHeader)
+        Axios.post("http://gateway-service:9900/goal-service/goal", goal, authHeader)
         .then(response => {
           console.log(response);
           
@@ -135,7 +135,7 @@ class Goals extends Component {
           formData['dueDate'].value = '';
           const totalGoals = this.state.totalgoals + 1;
           this.setState({ addGoalForm: formData, formValidity: false, errorText: ''});
-          Axios.get('http://localhost:9900/goal-service/goals?page='+this.state.activePage, authHeader)
+          Axios.get('http://gateway-service:9900/goal-service/goals?page='+this.state.activePage, authHeader)
           .then(response => {
               console.log(response);  
                       
@@ -188,7 +188,7 @@ class Goals extends Component {
               Authorization: 'Bearer ' + this.props.token
           }
         };
-        Axios.get('http://localhost:9900/goal-service/goals', authHeader)
+        Axios.get('http://gateway-service:9900/goal-service/goals', authHeader)
         .then(response => {
             console.log(response);  
                     
@@ -251,7 +251,7 @@ class Goals extends Component {
           }
         };
 
-        let url = 'http://localhost:9900/goal-service/goals';
+        let url = 'http://gateway-service:9900/goal-service/goals';
         
         if (searchText) {
           url = url + '?search=' + searchText;
@@ -275,7 +275,7 @@ class Goals extends Component {
           }
         };
 
-        let url = 'http://localhost:9900/goal-service/goals?page=' + pageNumber;
+        let url = 'http://gateway-service:9900/goal-service/goals?page=' + pageNumber;
 
         if (this.state.searchText) {
           url = url + "&search=" + this.state.searchText;
