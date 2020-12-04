@@ -1,52 +1,45 @@
 version: 2.1
+
+orbs:
+  docker: circleci/docker@0.5.13
+
 jobs:
-  build:
+  run_tests:
+    working_directory: ~/hourglass-app
     docker:
-      - image: node:11.10.1
-
-    working_directory: ~/repo
-
+      - image: circleci/node:10.16.3
     steps:
       - checkout
-
-      # Download and cache dependencies
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn install
-
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: npm-install
+          command: npm install
       - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: yarn test
+            - ./node_modules
       - run:
-          name: Setup environment variables
-          command: |
-            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=hourglass-ui' >> $BASH_ENV
-      - setup_remote_docker:
-          version: 19.03.13
-      - run:
-          name: Build and push Docker image
-          command: |
-            set -x 
-            VER="18.06.3-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
-      - run: yarn ci:docker
+          name: test
+          command: npm test
+  
 workflows:
-  main:
+  version: 2
+  build_deploy:
     jobs:
-      - build:
-          context:
-            - docker-context
+      - run_tests
+      - docker/publish:
+          image: nikmohan81/hourglass-ui
+          dockerfile: dockerfile
+          requires:
+            - run_tests
+          filters:
+            branches:
+              only: 
+                - master
 
 
      
