@@ -25,5 +25,26 @@ jobs:
 
       # run tests!
       - run: yarn test
+      - run:
+          name: Setup environment variables
+          command: |
+            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=hourglass-ui' >> $BASH_ENV
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker build -t nikmohan81/$IMAGE_NAME:$TAG -t nikmohan81/$IMAGE_NAME:latest .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push nikmohan81/$IMAGE_NAME:$TAG
+            docker push nikmohan81/$IMAGE_NAME:latest
+workflows:
+  main:
+    jobs:
+      - build:
+          context:
+            - docker-context
+
 
      
