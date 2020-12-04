@@ -33,7 +33,7 @@ workflows:
       - run_tests
       - docker/publish:
           image: nikmohan81/hourglass-ui
-          dockerfile: dockerfile
+          dockerfile: Dockerfile
           requires:
             - run_tests
           filters:
