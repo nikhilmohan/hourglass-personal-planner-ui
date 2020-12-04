@@ -35,10 +35,12 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            docker build -t nikmohan81/$IMAGE_NAME:$TAG -t nikmohan81/$IMAGE_NAME:latest .
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker push nikmohan81/$IMAGE_NAME:$TAG
-            docker push nikmohan81/$IMAGE_NAME:latest
+            set -x 
+            VER="18.06.3-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run: yarn ci:docker
 workflows:
   main:
     jobs:

@@ -62,7 +62,11 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "docker:build": "docker build -t nikmohan81/hourglass-ui:latest .",
+    "docker:login": "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD",
+    "docker:push": "docker push nikmohan81/hourglass-ui:latest",
+    "ci:docker": "npm run docker:build && npm run docker:login && npm run docker:push"
   },
   "jest": {
     "collectCoverageFrom": [
