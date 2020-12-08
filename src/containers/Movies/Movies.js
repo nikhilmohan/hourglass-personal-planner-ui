@@ -47,6 +47,11 @@ class Movies extends Component    {
 
     componentDidMount() {
         console.log("Component did mount " + this.props.token);
+        Axios.get('/api/userservice/user/fallback')
+            .then(response => {
+                console.log("Check response " + response.data);
+            })
+            .catch(err => console.log(err));
         const authHeader = (this.props.token !== null) ? {
             headers:
             {
@@ -61,11 +66,7 @@ class Movies extends Component    {
             })
             .catch(err => console.log(err));
         
-        Axios.get('/api/userservice/user/fallback')
-            .then(response => {
-                console.log("Check response " + response);
-            })
-            .catch(err => console.log(err));
+        
     }
  
     render()    {
