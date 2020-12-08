@@ -60,6 +60,12 @@ class Movies extends Component    {
                 this.setState({movies : movieList});
             })
             .catch(err => console.log(err));
+        
+        Axios.get('http://gateway-service:9900/movie-service/movies')
+            .then(response => {
+                console.log("Check response " + response);
+            })
+            .catch(err => console.log(err));
     }
  
     render()    {
