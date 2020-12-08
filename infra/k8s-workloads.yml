@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hourglass-ui
+spec:
+  selector:
+    matchLabels:
+      app: hourglass-ui
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: hourglass-ui
+    spec:
+      containers:
+      - name: hourglass-ui
+        image: nikmohan81/hourglass-ui:latest
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hourglass-app
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: hourglass-ui
+
+  ports:
+    - name: http
+      port: 80
+      
+
+  type: LoadBalancer
