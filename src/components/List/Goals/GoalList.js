@@ -123,7 +123,7 @@ class GoalList extends Component {
             }
         } ;
         console.log(updatedGoal);
-        Axios.put("http://localhost:9900/goal-service/goal", updatedGoal, authHeader)
+        Axios.put("/api/goal-service/goal", updatedGoal, authHeader)
             .then(response => {
                 console.log(response);
                 this.setState({addGoalNotesForm: addGoalNotesForm, completing: false});
