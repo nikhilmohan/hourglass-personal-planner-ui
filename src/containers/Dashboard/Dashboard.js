@@ -123,7 +123,7 @@ class Dashboard extends Component{
                 Authorization : 'Bearer ' + this.props.token
             }
         };
-        Axios.get('http://gateway-service:9900/dashboard-service/metrics', authHeader)
+        Axios.get('/api/dashboard-service/metrics', authHeader)
             .then(response => {
                 console.log(response.data);
                 console.log("FALLBACK " + response.data.fallback);

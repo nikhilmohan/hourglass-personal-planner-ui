@@ -112,7 +112,7 @@ class Tasks extends Component {
             }
          } ;
 
-        Axios.post("http://gateway-service:9900/task-service/task/add", task, authHeader)
+        Axios.post("/api/task-service/task/add", task, authHeader)
         .then(response => {
           console.log(response);
           tasks.push(response.data);
@@ -166,7 +166,7 @@ class Tasks extends Component {
             }
          } ;
 
-         Axios.get('http://gateway-service:9900/task-service/tasks', authHeader)
+         Axios.get('/api/task-service/tasks', authHeader)
             .then(response => {
                 console.log(response);
                 this.setState({tasks : response.data.tasks});
@@ -237,7 +237,7 @@ class Tasks extends Component {
           }
        } ;
 
-      Axios.post("http://gateway-service:9900/task-service/task/complete", this.state.taskToDelete, authHeader)
+      Axios.post("/api/task-service/task/complete", this.state.taskToDelete, authHeader)
       .then(response => {
         console.log(response);
         tasks = tasks.filter(task => task.name !== this.state.taskToDelete.name);

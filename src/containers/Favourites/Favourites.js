@@ -15,7 +15,7 @@ class Favourites extends Component {
     componentDidMount () {
          //server call to fetch favourites
 
-         Axios.get('http://gateway-service:9900/favourites-service/favourites/user/' + this.props.id + '/movies')
+         Axios.get('/api/favourites-service/favourites/user/' + this.props.id + '/movies')
             .then(response => {
                 console.log(response);
                 this.setState({movies : response.data.favouriteMovies});
@@ -77,7 +77,7 @@ class Favourites extends Component {
         // fetchedTidbits.push(tidbit3);
         // fetchedTidbits.push(tidbit4);
 
-        Axios.get('http://gateway-service:9900/favourites-service/favourites/user/' + this.props.id + '/trivia')
+        Axios.get('/api/favourites-service/favourites/user/' + this.props.id + '/trivia')
         .then(response => {
             console.log(response);
             this.setState({tidbits : response.data.favouriteTrivia});
