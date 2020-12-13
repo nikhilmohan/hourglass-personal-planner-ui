@@ -7,7 +7,7 @@ import GoalList from '../../components/List/Goals/GoalList';
 import Aux from '../../hoc/Auxilliary';
 import Axios from 'axios';
 import { connect } from 'react-redux';
-import { checkValidity } from '../../components/InputValidation/InputValidation'; 
+import { validate } from '../../components/InputValidation/InputValidation'; 
 
 class Goals extends Component {
     state = {
@@ -159,17 +159,17 @@ class Goals extends Component {
     inputChangedHandler = (event, inputId) => {
         const updatedForm = {...this.state.addGoalForm};
         const updatedElement = {...updatedForm[inputId]};
-        console.log("Date val: " + updatedElement.value);
-        if (inputId === 'dueDate')  {
-            updatedElement.value = event;            
-        } else {
-            updatedElement.value = event.target.value;
-        }
-       // const valid = this.checkValidity(updatedElement.value, updatedElement.validation);
-        const valid = checkValidity(updatedElement.value, updatedElement.validation, null);
-        updatedElement.isValid = valid;
-        updatedElement.touched = true;
-        updatedForm[inputId] = updatedElement;
+      //   console.log("Date val: " + updatedElement.value);
+      //   if (inputId === 'dueDate')  {
+      //       updatedElement.value = event;            
+      //   } else {
+      //       updatedElement.value = event.target.value;
+      //   }
+      //  // const valid = this.checkValidity(updatedElement.value, updatedElement.validation);
+      //   const valid = checkValidity(updatedElement.value, updatedElement.validation, null);
+      //   updatedElement.isValid = valid;
+      //   updatedElement.touched = true;
+        updatedForm[inputId] = validate(event, inputId, updatedElement)
         let formValidity = true;
         for (let elem in updatedForm) {
             formValidity = formValidity && updatedForm[elem].isValid;

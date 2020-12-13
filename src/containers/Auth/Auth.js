@@ -146,7 +146,7 @@ class Auth extends Component {
         updatedElement.value = event.target.value;
         
         //const valid = this.checkValidity(updatedElement.value, updatedElement.validation);
-        const valid = checkValidity(updatedElement.value, updatedElement.validation, tthis.state.signupForm['password'].value);
+        const valid = checkValidity(updatedElement.value, updatedElement.validation, this.state.signupForm['password'].value);
         updatedElement.isValid = valid;
         updatedElement.touched = true;
         updatedForm[inputId] = updatedElement;
