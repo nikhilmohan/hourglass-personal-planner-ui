@@ -8,11 +8,11 @@ export const authStart = () => {
   };
 }
 
-export const authSuccess = (data) => {
+export const authSuccess = (token, id) => {
   return {
     type : actionTypes.AUTH_SUCCESS,
-    token : data.idToken,
-    id : data.localId
+    token : token,
+    id : id
   };
 }
 export const logout = (userId, token) => {
@@ -85,7 +85,7 @@ export const auth = (email, password, signUp) => {
     .then(response => {
       localStorage.setItem('token', response.data.idToken);
       localStorage.setItem('id', response.data.localId);
-      dispatch(authSuccess(response.data));
+      dispatch(authSuccess(response.data.idToken, response.data.localId));
       dispatch(checkAuthTimeout(response.data.expiresIn, response.data.localId))
     })
     .catch(err => {
